@@ -43,10 +43,6 @@
 
 - **GitHub:** [@criex2281337](https://github.com/criex2281337)
 
-## 📝 Лицензия
-
-MIT
-
 ---
 
 Made with ❤️ by Roman Kolesnikov
