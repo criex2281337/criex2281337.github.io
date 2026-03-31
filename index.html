@@ -188,6 +188,14 @@
             position: relative;
             z-index: 2;
             animation: avatarPulse 3s ease-in-out infinite;
+            overflow: hidden;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
         }
 
         @keyframes avatarPulse {
@@ -724,7 +732,9 @@
             <div class="header-content">
                 <div class="avatar-container">
                     <div class="avatar-ring"></div>
-                    <div class="avatar">РК</div>
+                    <div class="avatar">
+                        <img src="https://avatars.githubusercontent.com/u/236803341?s=400&u=8c11a3a7079e0fe7982618e948e8936d2ab18104&v=4" alt="Роман Колесников">
+                    </div>
                 </div>
                 <h1 class="title">Привет, я Роман Колесников</h1>
                 <p class="subtitle">Начинающий программист, увлечённо изучающий современные технологии и создающий интересные проекты</p>
