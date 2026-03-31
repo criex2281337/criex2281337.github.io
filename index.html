@@ -3,21 +3,930 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Моё портфолио</title>
+    <title>Портфолио | Роман Колесников</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            min-height: 100vh;
+            color: #e4e4e4;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(circle at 20% 80%, rgba(120, 50, 200, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(60, 100, 200, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(100, 50, 150, 0.1) 0%, transparent 40%);
+            animation: bgRotate 30s linear infinite;
+        }
+
+        @keyframes bgRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(120, 100, 255, 0.6);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(120, 100, 255, 0.8);
+            animation: float 15s infinite;
+        }
+
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 20%; animation-delay: 2s; }
+        .particle:nth-child(3) { left: 30%; animation-delay: 4s; }
+        .particle:nth-child(4) { left: 40%; animation-delay: 1s; }
+        .particle:nth-child(5) { left: 50%; animation-delay: 3s; }
+        .particle:nth-child(6) { left: 60%; animation-delay: 5s; }
+        .particle:nth-child(7) { left: 70%; animation-delay: 2.5s; }
+        .particle:nth-child(8) { left: 80%; animation-delay: 4.5s; }
+        .particle:nth-child(9) { left: 90%; animation-delay: 1.5s; }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* Grid pattern overlay */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(120, 100, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(120, 100, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            padding: 80px 40px;
+            background: linear-gradient(135deg, rgba(20, 20, 35, 0.8), rgba(15, 15, 25, 0.9));
+            border-radius: 24px;
+            margin-bottom: 50px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(120, 100, 255, 0.2);
+            box-shadow:
+                0 0 40px rgba(120, 100, 255, 0.1),
+                inset 0 0 60px rgba(120, 100, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg at 50% 50%,
+                transparent 0deg,
+                rgba(120, 100, 255, 0.1) 60deg,
+                transparent 120deg,
+                rgba(60, 150, 200, 0.1) 180deg,
+                transparent 240deg,
+                rgba(150, 80, 200, 0.1) 300deg,
+                transparent 360deg);
+            animation: headerGlow 10s linear infinite;
+        }
+
+        @keyframes headerGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .avatar-container {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 35px;
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7c3aed 0%, #2563eb 50%, #06b6d4 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            font-weight: 800;
+            color: white;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            box-shadow:
+                0 0 60px rgba(124, 58, 237, 0.5),
+                0 0 100px rgba(37, 99, 235, 0.3),
+                inset 0 0 40px rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 2;
+            animation: avatarPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes avatarPulse {
+            0%, 100% {
+                box-shadow:
+                    0 0 60px rgba(124, 58, 237, 0.5),
+                    0 0 100px rgba(37, 99, 235, 0.3),
+                    inset 0 0 40px rgba(255, 255, 255, 0.1);
+            }
+            50% {
+                box-shadow:
+                    0 0 80px rgba(124, 58, 237, 0.7),
+                    0 0 120px rgba(37, 99, 235, 0.5),
+                    inset 0 0 40px rgba(255, 255, 255, 0.15);
+            }
+        }
+
+        .avatar-ring {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: rgba(124, 58, 237, 0.6);
+            border-right-color: rgba(37, 99, 235, 0.4);
+            animation: avatarRing 3s linear infinite;
+        }
+
+        @keyframes avatarRing {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #a78bfa, #60a5fa, #2dd4bf, #a78bfa);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 5s ease infinite;
+            text-shadow: 0 0 80px rgba(167, 139, 250, 0.3);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            color: #94a3b8;
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Skills Section */
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 14px;
+            margin-top: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .skill-tag {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(37, 99, 235, 0.15));
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #c4b5fd;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: default;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-tag::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .skill-tag:hover::before {
+            left: 100%;
+        }
+
+        .skill-tag:hover {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.3), rgba(37, 99, 235, 0.3));
+            transform: translateY(-4px) scale(1.05);
+            box-shadow:
+                0 10px 30px rgba(124, 58, 237, 0.4),
+                0 0 20px rgba(124, 58, 237, 0.2);
+            border-color: rgba(124, 58, 237, 0.6);
+        }
+
+        /* Section Styles */
+        .section {
+            background: linear-gradient(135deg, rgba(20, 20, 35, 0.8), rgba(15, 15, 25, 0.9));
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(120, 100, 255, 0.15);
+            box-shadow:
+                0 0 40px rgba(120, 100, 255, 0.08),
+                inset 0 0 60px rgba(120, 100, 255, 0.03);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(124, 58, 237, 0.5),
+                rgba(37, 99, 235, 0.5),
+                rgba(124, 58, 237, 0.5),
+                transparent);
+            background-size: 200% 100%;
+            animation: borderGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 5px;
+            height: 32px;
+            background: linear-gradient(180deg, #7c3aed, #2563eb, #06b6d4);
+            border-radius: 3px;
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.6);
+        }
+
+        .contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(37, 99, 235, 0.1));
+            padding: 14px 28px;
+            border-radius: 16px;
+            color: #a78bfa;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(124, 58, 237, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(37, 99, 235, 0.2));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .contact-link:hover::before {
+            transform: scaleX(1);
+        }
+
+        .contact-link span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-link svg {
+            position: relative;
+            z-index: 1;
+            transition: transform 0.4s ease;
+        }
+
+        .contact-link:hover {
+            transform: translateY(-4px);
+            box-shadow:
+                0 15px 40px rgba(124, 58, 237, 0.3),
+                0 0 30px rgba(124, 58, 237, 0.2);
+            border-color: rgba(124, 58, 237, 0.5);
+        }
+
+        .contact-link:hover svg {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 28px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-card {
+            background: linear-gradient(135deg, rgba(25, 25, 40, 0.9), rgba(20, 20, 30, 0.95));
+            border-radius: 20px;
+            padding: 28px;
+            border: 1px solid rgba(120, 100, 255, 0.12);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% -20%, rgba(124, 58, 237, 0.15), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg at 50% 50%,
+                transparent 0deg,
+                rgba(124, 58, 237, 0.1) 60deg,
+                transparent 120deg,
+                rgba(37, 99, 235, 0.1) 180deg,
+                transparent 240deg,
+                rgba(6, 182, 212, 0.1) 300deg,
+                transparent 360deg);
+            animation: cardRotate 8s linear infinite;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .project-card:hover::after {
+            opacity: 1;
+        }
+
+        @keyframes cardRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(124, 58, 237, 0.4);
+            box-shadow:
+                0 20px 60px rgba(124, 58, 237, 0.25),
+                0 0 40px rgba(124, 58, 237, 0.15),
+                inset 0 0 30px rgba(124, 58, 237, 0.05);
+        }
+
+        .project-card-content {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        .project-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #7c3aed, #2563eb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+            box-shadow:
+                0 10px 30px rgba(124, 58, 237, 0.4),
+                0 0 20px rgba(124, 58, 237, 0.2);
+            transition: all 0.4s ease;
+        }
+
+        .project-card:hover .project-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow:
+                0 15px 40px rgba(124, 58, 237, 0.6),
+                0 0 30px rgba(124, 58, 237, 0.3);
+        }
+
+        .project-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+            word-break: break-word;
+        }
+
+        .project-lang {
+            display: inline-block;
+            font-size: 0.8rem;
+            padding: 5px 12px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(37, 99, 235, 0.2));
+            color: #c4b5fd;
+            font-weight: 600;
+            border: 1px solid rgba(124, 58, 237, 0.3);
+        }
+
+        .project-description {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            flex: 1;
+            line-height: 1.7;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #a78bfa;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            margin-top: auto;
+            position: relative;
+        }
+
+        .project-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #7c3aed, #2563eb);
+            transition: width 0.3s ease;
+        }
+
+        .project-link:hover::after {
+            width: 100%;
+        }
+
+        .project-link:hover {
+            color: #c4b5fd;
+            gap: 14px;
+        }
+
+        .hosted-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 14px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-top: 15px;
+            box-shadow:
+                0 5px 20px rgba(16, 185, 129, 0.4),
+                0 0 15px rgba(16, 185, 129, 0.2);
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% {
+                box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4), 0 0 15px rgba(16, 185, 129, 0.2);
+            }
+            50% {
+                box-shadow: 0 8px 30px rgba(16, 185, 129, 0.6), 0 0 25px rgba(16, 185, 129, 0.3);
+            }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 50px 20px;
+            margin-top: 60px;
+            color: #64748b;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-heart {
+            display: inline-block;
+            color: #e74c3c;
+            animation: heartBeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            10%, 30% { transform: scale(1.1); }
+            20%, 40% { transform: scale(1); }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            .subtitle {
+                font-size: 1rem;
+            }
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                padding: 50px 25px;
+            }
+            .section {
+                padding: 30px 20px;
+            }
+            .avatar {
+                width: 120px;
+                height: 120px;
+                font-size: 48px;
+            }
+            .avatar-container {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        /* Cursor glow effect */
+        .cursor-glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease;
+        }
+    </style>
 </head>
 <body>
-    <div class="main">
-        <h1 class="title">Привет, я Колесников Роман</h1>
-        <p class="text">Я начинающий программист, изучаю языки Python, C, C#, C++, SQL, HTML.</p>
-        <p>
-            Контакты:
-        </p>
-        <p>
-            GitHub: https://github.com/criex2281337
-        </p>
-        <p>
-            Мои проекты: https://github.com/criex2281337/pedproj
-        </p>
+    <!-- Background Effects -->
+    <div class="bg-animation">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
     </div>
+    <div class="grid-overlay"></div>
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header fade-in">
+            <div class="header-content">
+                <div class="avatar-container">
+                    <div class="avatar-ring"></div>
+                    <div class="avatar">РК</div>
+                </div>
+                <h1 class="title">Привет, я Роман Колесников</h1>
+                <p class="subtitle">Начинающий программист, увлечённо изучающий современные технологии и создающий интересные проекты</p>
+
+                <div class="skills">
+                    <span class="skill-tag">🐍 Python</span>
+                    <span class="skill-tag">C</span>
+                    <span class="skill-tag">C#</span>
+                    <span class="skill-tag">C++</span>
+                    <span class="skill-tag">📊 SQL</span>
+                    <span class="skill-tag">🌐 HTML/CSS</span>
+                    <span class="skill-tag">Flask</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Contact Section -->
+        <section class="section fade-in">
+            <h2 class="section-title">Контакты</h2>
+            <div class="contact-links">
+                <a href="https://github.com/criex2281337" class="contact-link" target="_blank">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    <span>GitHub</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="section fade-in">
+            <h2 class="section-title">Мои проекты</h2>
+            <div class="projects-grid">
+                <!-- FlaskPassword -->
+                <div class="project-card fade-in">
+                    <div class="project-card-content">
+                        <div class="project-header">
+                            <div class="project-icon">🔐</div>
+                            <div class="project-info">
+                                <h3 class="project-title">FlaskPassword</h3>
+                                <span class="project-lang">Python/Flask</span>
+                            </div>
+                        </div>
+                        <p class="project-description">
+                            Веб-приложение для безопасного управления паролями на базе Flask.
+                        </p>
+                        <a href="https://github.com/criex2281337/FlaskPassword" class="project-link" target="_blank">
+                            Смотреть проект <span>→</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- pedproj / FoodLens -->
+                <div class="project-card fade-in">
+                    <div class="project-card-content">
+                        <div class="project-header">
+                            <div class="project-icon">🍽️</div>
+                            <div class="project-info">
+                                <h3 class="project-title">FoodLens PP v4</h3>
+                                <span class="project-lang">Python/Flask</span>
+                            </div>
+                        </div>
+                        <p class="project-description">
+                            Анализ калорийности блюд по фотографиям. Учебный проект на Flask с использованием компьютерного зрения.
+                        </p>
+                        <a href="https://github.com/criex2281337/pedproj" class="project-link" target="_blank">
+                            Смотреть проект <span>→</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Video Hosting -->
+                <div class="project-card fade-in">
+                    <div class="project-card-content">
+                        <div class="project-header">
+                            <div class="project-icon">🎬</div>
+                            <div class="project-info">
+                                <h3 class="project-title">Video Hosting</h3>
+                                <span class="project-lang">Web</span>
+                            </div>
+                        </div>
+                        <p class="project-description">
+                            Платформа для размещения и просмотра видео контента.
+                        </p>
+                        <a href="https://github.com/Krasmol/videohosting" class="project-link" target="_blank">
+                            Смотреть проект <span>→</span>
+                        </a>
+                        <span class="hosted-badge">🚀 Хостинг: criex2281337.github.io</span>
+                    </div>
+                </div>
+
+                <!-- KupiProdai -->
+                <div class="project-card fade-in">
+                    <div class="project-card-content">
+                        <div class="project-header">
+                            <div class="project-icon">🛒</div>
+                            <div class="project-info">
+                                <h3 class="project-title">KupiProdai</h3>
+                                <span class="project-lang">C#</span>
+                            </div>
+                        </div>
+                        <p class="project-description">
+                            Торговая площадка для покупки и продажи товаров.
+                        </p>
+                        <a href="https://github.com/criex2281337/KupiProdai" class="project-link" target="_blank">
+                            Смотреть проект <span>→</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Attendance Tracking System -->
+                <div class="project-card fade-in">
+                    <div class="project-card-content">
+                        <div class="project-header">
+                            <div class="project-icon">📋</div>
+                            <div class="project-info">
+                                <h3 class="project-title">Attendance Tracking System</h3>
+                                <span class="project-lang">Python</span>
+                            </div>
+                        </div>
+                        <p class="project-description">
+                            Система отслеживания посещаемости для учебных заведений.
+                        </p>
+                        <a href="https://github.com/criex2281337/attendance_tracking_system" class="project-link" target="_blank">
+                            Смотреть проект <span>→</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Student Cabinet -->
+                <div class="project-card fade-in">
+                    <div class="project-card-content">
+                        <div class="project-header">
+                            <div class="project-icon">👨‍🎓</div>
+                            <div class="project-info">
+                                <h3 class="project-title">Student Cabinet</h3>
+                                <span class="project-lang">Web</span>
+                            </div>
+                        </div>
+                        <p class="project-description">
+                            Личный кабинет студента с доступом к учебным материалам и расписанию.
+                        </p>
+                        <a href="https://github.com/criex2281337/student-cabinet" class="project-link" target="_blank">
+                            Смотреть проект <span>→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer fade-in">
+            <p>Сделано с <span class="footer-heart">❤</span> | &copy; 2026 Роман Колесников</p>
+        </footer>
+    </div>
+
+    <script>
+        // Cursor glow effect
+        const cursorGlow = document.getElementById('cursorGlow');
+
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.left = e.clientX + 'px';
+            cursorGlow.style.top = e.clientY + 'px';
+        });
+
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add stagger delay to project cards
+        document.querySelectorAll('.project-card').forEach((card, index) => {
+            card.style.transitionDelay = `${index * 0.1}s`;
+        });
+
+        // Skill tags floating animation
+        document.querySelectorAll('.skill-tag').forEach((tag, index) => {
+            tag.style.animation = `skillFloat 3s ease-in-out infinite ${index * 0.2}s`;
+        });
+
+        // Add skill float keyframes dynamically
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes skillFloat {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-5px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>
